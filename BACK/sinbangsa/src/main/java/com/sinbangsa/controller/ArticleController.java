@@ -31,7 +31,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<String> createArticle(@RequestBody ArticleDto articleDto) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

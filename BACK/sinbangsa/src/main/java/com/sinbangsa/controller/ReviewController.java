@@ -31,19 +31,19 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<String> createReview(@RequestBody ReviewDto reviewDto) {
+        LOGGER.info("[ReviewController] createReview 호출 ");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         boolean result = reviewService.createReview(reviewDto);
         if (!result) {
-
-
+            LOGGER.info("[ReviewController] 실패");
             return new ResponseEntity<>("리뷰 작성 실패", headers, HttpStatus.BAD_REQUEST);
         }
 
-
+        LOGGER.info("[ReviewController] 성공");
         return new ResponseEntity<>("리뷰 작성 성공", headers, HttpStatus.CREATED);
     }
 

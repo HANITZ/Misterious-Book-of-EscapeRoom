@@ -25,10 +25,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     public boolean createReview(ReviewDto reviewDto) {
-
+        LOGGER.info("[article 게시글 등록] 게시글");
         ThemeReview themeReview = new ThemeReview();
 
         try {
+
             themeReview.setReviewTheme(themeRepository.findById(reviewDto.getThemeId()));
             themeReview.setImageUrl(reviewDto.getReviewImg());
             themeReview.setStar(reviewDto.getStar());
@@ -44,6 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
             // jwt 토큰 완료 후 reviewUser 넣어야함
 
             reviewRepository.save(themeReview);
+            LOGGER.info("[article 게시글 등록] 등록완료");
         } catch (Exception e) {
             return false;
         }
