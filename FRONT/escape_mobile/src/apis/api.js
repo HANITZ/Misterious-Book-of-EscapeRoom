@@ -15,9 +15,10 @@ const BASE_URL2 = "https://my-json-server.typicode.com/dm0113";
 
 
 // 메인
-export const getPreloading = (mapX, mapY) => {
-  // /api/mainpage
-  fetch(`${BASE_URL}/mocks/db`)
+export const getPreloading = async (mapX, mapY) => {
+  const response = await (fetch(`${BASE_URL}/mainpage`)).then((res) => res.json())
+  console.log(response);
+  return 
 }
 
 
@@ -28,8 +29,7 @@ const getSearch = async ({ queryKey }) => {
   query = new URLSearchParams({
     searchWord: query
   })
-  const response = await (await fetch(`${BASE_URL}/mainpage/search?${query}`)).json()
-  return response
+  return await (await fetch(`${BASE_URL}/mainpage/search?${query}`)).json()
 }
 
 const getCafeDetail = async({queryKey}) => {
@@ -37,11 +37,9 @@ const getCafeDetail = async({queryKey}) => {
   return await (await fetch(`${BASE_URL}/book/store/${storeId}`)).json();
 }
 
-const getThemeDetail = () => {
-  // api/book/theme/{themeId}
-  // 헤더에 토큰 추가
-  fetch(`${BASE_URL}/mocks/db`).then((res) => res.json());
-
+const getThemeDetail = async() => {
+  let [_, themeId] = queryKey
+  return await (await fetch(`${BASE_URL}/book/theme/${themeId}`)).json();
 }
 
 export const searchApi = { getSearch, getCafeDetail, getThemeDetail };

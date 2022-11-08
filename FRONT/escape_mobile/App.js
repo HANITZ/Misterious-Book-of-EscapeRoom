@@ -7,26 +7,23 @@ import { ThemeProvider } from 'styled-components';
 import styled from 'styled-components/native';
 import theme from './theme';
 
+import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-
 import { NavigationContainer } from '@react-navigation/native';
-import Root from './src/navigation/Root';
-import SearchScreen from './src/screens/SearchScreen';
-
 import { NativeBaseProvider } from "native-base";
+import Root from './src/navigation/Root';
 
 
-
+const queryClient = new QueryClient();
 const RootContainer = styled.View`
   flex: 1;
   background-color: #212121;
 `
 
-const queryClient = new QueryClient();
-
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       // This tells the splash screen to hide immediately! If we call this after
@@ -53,6 +50,8 @@ export default function App() {
           "Classic" : require("./src/assets/fonts/Cafe24Classictype.ttf")
         });
         
+
+        // setInitialData(data)
       } catch (e) {
         console.warn(e);
 
@@ -70,16 +69,17 @@ export default function App() {
   }
 
   return (
-
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <RootContainer>
-          <NavigationContainer>
-            <NativeBaseProvider>
-              <Root />
-            </NativeBaseProvider>
-            {/* <MainScreen /> */}
-          </NavigationContainer>
+          <RecoilRoot>
+            <NavigationContainer>
+              <NativeBaseProvider>
+                <Root />
+              </NativeBaseProvider>
+              {/* <MainScreen /> */}
+            </NavigationContainer>
+        </RecoilRoot>
         </RootContainer>
         <StatusBar style="auto" />
       </ThemeProvider>

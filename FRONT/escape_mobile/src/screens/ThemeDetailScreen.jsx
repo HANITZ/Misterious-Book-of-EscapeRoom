@@ -11,6 +11,7 @@ import Svg,{ Circle } from 'react-native-svg';
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { searchApi } from "../apis/api";
+import LoadingScreen from "./LoadingScreen";
 
 function ThemeDetailScreen({ navigation, route }) {
   // 카운터
@@ -26,7 +27,6 @@ function ThemeDetailScreen({ navigation, route }) {
   const dimensions = useWindowDimensions();
   const Width = (dimensions.width - 256) / 2;
   const [showMenu, setShowMenu] = useState(true);
-  console.log(showMenu);
   const offsetValue = useRef(new Animated.Value(0)).current;
   const scaleValue = useRef(new Animated.Value(1)).current;
   const closeButtonOffset = useRef(new Animated.Value(0)).current;
@@ -86,10 +86,10 @@ function ThemeDetailScreen({ navigation, route }) {
   };
 
   const { themeId } = route.params;
-  // const { isLoading, data } = useQuery(
-  //   ["ThemeDetail", themeId],
-  //   searchApi.getThemeDetail
-  // );
+  const { isLoading, data } = useQuery(
+    ["ThemeDetail", themeId],
+    searchApi.getThemeDetail
+  );
   const ThemeDatas = {
     themeId: 3,
     themeName: "비밀의 가족",
@@ -181,6 +181,7 @@ function ThemeDetailScreen({ navigation, route }) {
   }, []);
 
   return (
+    isLoading ? <LoadingScreen /> :
     <SafeAreaView style={styles.container}>
       <MainContainer>
         <Shadow

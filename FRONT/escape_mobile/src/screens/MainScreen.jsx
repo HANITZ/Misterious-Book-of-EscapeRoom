@@ -1,10 +1,14 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react'
 import styled from 'styled-components/native';
+import { getPreloading } from '../apis/api';
 import ReservationComponent from '../components/ReservationComponent';
 
 
 export default function MainScreen() {
-  
+  const { isLoading, isFetching, datas, refetch } = useQuery(
+    ["preloadData"], getPreloading);
+
   // 프리로딩 API 연결
   const data = {
     "reservations": [{
