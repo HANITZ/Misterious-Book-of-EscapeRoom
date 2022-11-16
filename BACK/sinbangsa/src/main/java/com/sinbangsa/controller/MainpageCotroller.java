@@ -3,7 +3,6 @@ package com.sinbangsa.controller;
 import com.sinbangsa.data.dto.*;
 import com.sinbangsa.service.MainpageService;
 import com.sinbangsa.utils.JwtTokenProvider;
-import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +12,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -60,18 +57,33 @@ public class MainpageCotroller {
     }
 
 
-    @GetMapping("/search")
-    @ApiOperation(value = "검색")
-    public ResponseEntity<MainpageDto> getSearchResult(@RequestParam String searchWord, @RequestParam int page) {
-        LOGGER.info("[MainpageController] getSearchResult 호출");
+    @GetMapping("/search/store")
+    @ApiOperation(value = "카페 검색")
+    public ResponseEntity<MainpageStoreDto> getStoreSearchResult(@RequestParam String searchWord, @RequestParam int page, @RequestParam String type) {
+        LOGGER.info("[MainpageController] getSSearchResult 호출");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         try {
-            MainpageDto searchResult = mainpageService.getSearchResult(searchWord, page);
+            MainpageStoreDto searchResult = mainpageService.getStoreSearchResult(searchWord, page, type);
             return new ResponseEntity<>(searchResult, headers, HttpStatus.OK);
         } catch (Exception e) {
-            MainpageDto mainpageDto = new MainpageDto();
-            return new ResponseEntity<>(mainpageDto, headers, HttpStatus.BAD_REQUEST);
+            MainpageStoreDto mainpageStoreDto = new MainpageStoreDto();
+            return new ResponseEntity<>(mainpageStoreDto, headers, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/search/theme")
+    @ApiOperation(value = "테마 검색")
+    public ResponseEntity<MainpageThemeDto> getThemeSearchResult(@RequestParam String searchWord, @RequestParam int page, @RequestParam String type) {
+        LOGGER.info("[MainpageController] getTSearchResult 호출");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        try {
+            MainpageThemeDto searchResult = mainpageService.getThemeSearchResult(searchWord, page, type);
+            return new ResponseEntity<>(searchResult, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            MainpageThemeDto mainpageThemeDto = new MainpageThemeDto();
+            return new ResponseEntity<>(mainpageThemeDto, headers, HttpStatus.BAD_REQUEST);
         }
     }
 

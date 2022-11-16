@@ -1,9 +1,6 @@
 package com.sinbangsa.service;
 
-import com.sinbangsa.data.dto.MainpageDto;
-import com.sinbangsa.data.dto.PreLoadingDto;
-import com.sinbangsa.data.dto.TransferDto;
-import com.sinbangsa.data.dto.TransferSearchDto;
+import com.sinbangsa.data.dto.*;
 import com.sinbangsa.data.entity.*;
 import com.sinbangsa.data.repository.*;
 import com.sinbangsa.exception.ThemeNotFoundException;
@@ -16,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -34,16 +29,23 @@ public class MainpageServiceImpl implements MainpageService{
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public MainpageDto getSearchResult(String searchWord, int page) {
+    public MainpageStoreDto getStoreSearchResult(String searchWord, int page, String type) {
         LOGGER.info("[MainpageService] getSearchResult 호출");
-        MainpageDto searchResult = new MainpageDto();
-        List<MainpageDto.LStoreDto> lStoreDto = new ArrayList<>();
-        List<MainpageDto.LThemeDto> lThemeDto = new ArrayList<>();
+        MainpageStoreDto searchResult = new MainpageStoreDto();
+        List<MainpageStoreDto.LStoreDto> lStoreDto = new ArrayList<>();
 
         PageRequest pageRequest = PageRequest.of(page, 4);
-        List<Store> rplStorelist = storeRepository.findAllByStoreNameOrRegionContaining(searchWord, pageRequest);
+        List<Store> rplStorelist;
+        if (type.equals("name")) {
+            rplStorelist = storeRepository.findAllByStoreNameContaining(searchWord, pageRequest);
+        } else if (type.equals("region")) {
+            rplStorelist = storeRepository.findAllByStoreNameContaining(searchWord, pageRequest);
+        } else {
+            throw new IllegalArgumentException("잘못된 타입입니다.");
+        }
+
         for (Store store : rplStorelist){
-            MainpageDto.LStoreDto searchStore = new MainpageDto.LStoreDto();
+            MainpageStoreDto.LStoreDto searchStore = new MainpageStoreDto.LStoreDto();
             searchStore.setStoreId(store.getStoreId());
             searchStore.setStoreName(store.getStoreName());
             searchStore.setStoreImg(store.getPoster());
@@ -53,7 +55,6 @@ public class MainpageServiceImpl implements MainpageService{
             searchStore.setMapX(store.getMapX());
             searchStore.setMapY(store.getMapY());
             searchStore.setTel(store.getTel());
-
 
             List<Theme> themeList;
             themeList = themeRepository.findAllByStore(store);
@@ -75,7 +76,7 @@ public class MainpageServiceImpl implements MainpageService{
             }
 
 
-            MainpageDto.MostReviewedThemeDto mostReviewedTheme = new MainpageDto.MostReviewedThemeDto();
+            MainpageStoreDto.MostReviewedThemeDto mostReviewedTheme = new MainpageStoreDto.MostReviewedThemeDto();
             mostReviewedTheme.setThemeId(maxTheme.getId());
             mostReviewedTheme.setThemeName(maxTheme.getThemeName());
             mostReviewedTheme.setThemeImg(maxTheme.getPoster());
@@ -90,9 +91,32 @@ public class MainpageServiceImpl implements MainpageService{
         }
         searchResult.setStoreList(lStoreDto);
 
-        List<Theme> rplThemeList = themeRepository.findAllByThemeNameContaining(searchWord, pageRequest);
+
+        return searchResult;
+
+
+    }
+
+    @Override
+    public MainpageThemeDto getThemeSearchResult(String searchWord, int page, String type) {
+        LOGGER.info("[MainpageService] getSearchResult 호출");
+        MainpageThemeDto searchResult = new MainpageThemeDto();
+        List<MainpageThemeDto.LThemeDto> lThemeDto = new ArrayList<>();
+
+        PageRequest pageRequest = PageRequest.of(page, 8);
+        List<Theme> rplThemeList;
+
+        if (type.equals("name")) {
+            rplThemeList = themeRepository.findAllByThemeNameContaining(searchWord, pageRequest);
+        } else if (type.equals("region")) {
+            rplThemeList = themeRepository.findAllByThemeNameContaining(searchWord, pageRequest);
+        } else {
+            throw new IllegalArgumentException("타입이 잘못되었습니다.");
+        }
+
+
         for (Theme theme : rplThemeList) {
-            MainpageDto.LThemeDto searchTheme = new MainpageDto.LThemeDto();
+            MainpageThemeDto.LThemeDto searchTheme = new MainpageThemeDto.LThemeDto();
             searchTheme.setThemeId(theme.getId());
             searchTheme.setThemeName(theme.getThemeName());
             searchTheme.setThemeImg(theme.getPoster());

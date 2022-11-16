@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MainpageDto {
+public class MainpageStoreDto {
 
     @Getter
     @Setter
@@ -37,20 +37,7 @@ public class MainpageDto {
         private String homepage;
     }
 
-    @Getter
-    @Setter
-    public static class LThemeDto{
-        private long themeId;
-        private String themeName;
-        private String storeName;
-        private String themeImg;
-        private int likeCount;
-        private double star;
-        private String randomReview;
-    }
-
     private List<LStoreDto> storeList;
-    private List<LThemeDto> themelist;
 
 }
 

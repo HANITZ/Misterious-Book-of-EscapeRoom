@@ -1,15 +1,14 @@
 package com.sinbangsa.service;
 
-import com.sinbangsa.data.dto.MainpageDto;
-import com.sinbangsa.data.dto.PreLoadingDto;
-import com.sinbangsa.data.dto.TransferDto;
-import com.sinbangsa.data.dto.TransferSearchDto;
+import com.sinbangsa.data.dto.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface MainpageService {
-    MainpageDto getSearchResult(String searchWord, int page);
+    MainpageStoreDto getStoreSearchResult(String searchWord, int page, String type);
+
+    MainpageThemeDto getThemeSearchResult(String searchWord, int page, String type);
     PreLoadingDto getPreLoading();
 
     List<TransferDto> getTransfers(String region);
