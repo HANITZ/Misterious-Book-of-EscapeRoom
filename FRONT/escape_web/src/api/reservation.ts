@@ -1,6 +1,6 @@
 import { QueryFunctionContext } from '@tanstack/react-query';
 const BASE_URL = "https://k7c104.p.ssafy.io/api/admin";
-const Token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkB0ZXN0LmNvbSIsInJvbGVzIjpbIkFETUlOIl0sInVzZXJJZCI6MywiaXNzIjoiZXNjYXBlZGljdGlvbmFyeS5jb20iLCJpYXQiOjE2Njg2NDkwODIsImV4cCI6MTY2ODczNTQ4Mn0.iHBK5kii_0RC_zBtDjan5yddQiUittGdRA_oGRHe-FI';
+const Token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkB0ZXN0LmNvbSIsInJvbGVzIjpbIkFETUlOIl0sInVzZXJJZCI6MywiaXNzIjoiZXNjYXBlZGljdGlvbmFyeS5jb20iLCJpYXQiOjE2Njg5MDQ4NzQsImV4cCI6MTY2ODk5MTI3NH0.EtZm-ZmJpTUYJo_57jEit_iuL1x3rFSE0VyuAIwlf8g';
 
 
 // 참고
@@ -59,7 +59,7 @@ export const getReservation = async ({ queryKey }: QueryFunctionContext<[string,
   return await (
     await fetch(`${BASE_URL}/reservation/day/${storeId}?${params}`, {
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkB0ZXN0LmNvbSIsInJvbGVzIjpbIkFETUlOIl0sInVzZXJJZCI6MywiaXNzIjoiZXNjYXBlZGljdGlvbmFyeS5jb20iLCJpYXQiOjE2Njg2NDkwODIsImV4cCI6MTY2ODczNTQ4Mn0.iHBK5kii_0RC_zBtDjan5yddQiUittGdRA_oGRHe-FI',
+        Authorization: Token,
       },
     })
   ).json();
